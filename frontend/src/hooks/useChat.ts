@@ -1,11 +1,13 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { chatApi } from "@/services/api";
 import type { Message } from "@/types";
 
 export const useChat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isStreaming, setIsStreaming] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const streamingMessageIdRef = useRef<string | null>(null);
 
   const sendMessage = useCallback(async (content: string) => {
     if (!content.trim()) return;
@@ -19,26 +21,53 @@ export const useChat = () => {
 
     setMessages((prev) => [...prev, userMessage]);
     setIsLoading(true);
+    setIsStreaming(true);
     setError(null);
 
+    const assistantMessageId = crypto.randomUUID();
+    streamingMessageIdRef.current = assistantMessageId;
+
+    const assistantMessage: Message = {
+      id: assistantMessageId,
+      role: "assistant",
+      content: "",
+      timestamp: new Date(),
+    };
+
+    setMessages((prev) => [...prev, assistantMessage]);
+
     try {
-      const response = await chatApi.sendMessage({ message: content });
-
-      const assistantMessage: Message = {
-        id: crypto.randomUUID(),
-        role: "assistant",
-        content: response.message,
-        timestamp: new Date(response.timestamp),
-      };
-
-      setMessages((prev) => [...prev, assistantMessage]);
+      await chatApi.sendMessageStream(
+        { message: content },
+        (chunk) => {
+          setMessages((prev) =>
+            prev.map((msg) =>
+              msg.id === assistantMessageId
+                ? { ...msg, content: msg.content + chunk }
+                : msg
+            )
+          );
+        },
+        (err) => {
+          const errorMessage =
+            err instanceof Error ? err.message : "Не удалось отправить сообщение";
+          setError(errorMessage);
+          console.error("Ошибка отправки сообщения:", err);
+        },
+        () => {
+          setIsStreaming(false);
+          setIsLoading(false);
+          streamingMessageIdRef.current = null;
+        }
+      );
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "Не удалось отправить сообщение";
       setError(errorMessage);
       console.error("Ошибка отправки сообщения:", err);
-    } finally {
+      setIsStreaming(false);
       setIsLoading(false);
+      streamingMessageIdRef.current = null;
     }
   }, []);
 
@@ -50,6 +79,7 @@ export const useChat = () => {
   return {
     messages,
     isLoading,
+    isStreaming,
     error,
     sendMessage,
     clearMessages,

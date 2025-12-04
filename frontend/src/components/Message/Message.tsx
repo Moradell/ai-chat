@@ -3,9 +3,10 @@ import styles from "./Message.module.scss";
 
 interface MessageProps {
   message: MessageType;
+  isStreaming?: boolean;
 }
 
-export const Message = ({ message }: MessageProps) => {
+export const Message = ({ message, isStreaming = false }: MessageProps) => {
   const isUser = message.role === "user";
 
   return (
@@ -14,7 +15,10 @@ export const Message = ({ message }: MessageProps) => {
     >
       <div className={styles.content}>
         <div className={styles.role}>{isUser ? "Вы" : "ИИ"}</div>
-        <div className={styles.text}>{message.content}</div>
+        <div className={styles.text}>
+          {message.content || (isStreaming ? " " : "")}
+          {isStreaming && <span className={styles.cursor}>▊</span>}
+        </div>
         <div className={styles.timestamp}>
           {message.timestamp.toLocaleTimeString()}
         </div>

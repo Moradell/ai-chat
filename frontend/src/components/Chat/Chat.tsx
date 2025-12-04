@@ -5,7 +5,7 @@ import { Input } from "@/components/Input";
 import styles from "./Chat.module.scss";
 
 export const Chat = () => {
-  const { messages, isLoading, error, sendMessage, clearMessages } = useChat();
+  const { messages, isLoading, isStreaming, error, sendMessage, clearMessages } = useChat();
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -17,7 +17,7 @@ export const Chat = () => {
       <div className={styles.header}>
         <h1 className={styles.title}>AI Chat</h1>
         {messages.length > 0 && (
-          <button className={styles.clearButton} onClick={clearMessages}>
+          <button className={styles.clearButton} onClick={clearMessages} disabled={isStreaming}>
             Очистить
           </button>
         )}
@@ -30,13 +30,8 @@ export const Chat = () => {
           </div>
         ) : (
           messages.map((message) => (
-            <Message key={message.id} message={message} />
+            <Message key={message.id} message={message} isStreaming={isStreaming && message.role === "assistant" && message === messages[messages.length - 1]} />
           ))
-        )}
-        {isLoading && (
-          <div className={styles.loadingIndicator}>
-            <span>ИИ думает...</span>
-          </div>
         )}
         {error && <div className={styles.errorMessage}>Ошибка: {error}</div>}
         <div ref={messagesEndRef} />

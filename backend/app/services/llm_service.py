@@ -1,3 +1,4 @@
+import json
 from typing import AsyncGenerator
 
 import httpx
@@ -24,7 +25,7 @@ class LLMService:
                 raise Exception(f"Error communicating with LLM: {str(e)}")
 
     async def generate_response_stream(self, prompt: str) -> AsyncGenerator[str, None]:
-        async with httpx.AsyncClient(timeout=60.0) as client:
+        async with httpx.AsyncClient(timeout=120.0) as client:
             try:
                 async with client.stream(
                     "POST",
@@ -32,9 +33,14 @@ class LLMService:
                     json={"model": self.model, "prompt": prompt, "stream": True},
                 ) as response:
                     response.raise_for_status()
-                    async for chunk in response.aiter_text():
-                        if chunk.strip():
-                            yield chunk
+                    async for line in response.aiter_lines():
+                        if line.strip():
+                            try:
+                                data = json.loads(line)
+                                if "response" in data:
+                                    yield data["response"]
+                            except json.JSONDecodeError:
+                                continue
             except httpx.HTTPError as e:
                 raise Exception(f"Error communicating with LLM: {str(e)}")
 
@@ -45,7 +51,7 @@ class LLMService:
                     self.api_url.replace("/api/generate", "/api/tags")
                 )
                 return response.status_code == 200
-            except:
+            except Exception:
                 return False
 
 
