@@ -1,39 +1,48 @@
-// Colors
-$primary-color: #007bff;
-$primary-hover: #0056b3;
-$danger-color: #dc3545;
-$danger-hover: #c82333;
+// Основные цвета
+$primary-color: #6366f1;
+$primary-hover: #4f46e5;
+$primary-light: #818cf8;
+$primary-dark: #3730a3;
 
-$background-light: #f0f2f5;
+$danger-color: #ef4444;
+$danger-hover: #dc2626;
+
+$accent-color: #8b5cf6;
+$accent-hover: #7c3aed;
+
+$background-app: #f8fafc;
+$background-light: #f1f5f9;
 $background-white: #ffffff;
-$background-gray: #fafafa;
-$background-message: #f0f0f0;
+$background-gray: #f9fafb;
+$background-message: #f3f4f6;
+$background-header: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 
-$border-color: #e0e0e0;
-$border-color-input: #ccc;
+$border-color: #e2e8f0;
+$border-color-light: #f1f5f9;
+$border-color-input: #cbd5e1;
 
-$text-primary: #333;
-$text-secondary: #666;
-$text-tertiary: #999;
+$text-primary: #1e293b;
+$text-secondary: #64748b;
+$text-tertiary: #94a3b8;
 $text-white: #ffffff;
 
-$error-background: #f8d7da;
-$error-text: #721c24;
-$error-border: #f5c6cb;
+$error-background: #fee2e2;
+$error-text: #991b1b;
+$error-border: #fecaca;
 
-// Spacing
+// Отступы
 $spacing-xs: 0.25rem;
 $spacing-sm: 0.5rem;
 $spacing-md: 0.75rem;
 $spacing-lg: 1rem;
 $spacing-xl: 1.5rem;
 
-// Border radius
+// Бордеры
 $border-radius-sm: 0.25rem;
 $border-radius-md: 0.5rem;
 $border-radius-lg: 1rem;
 
-// Font sizes
+// Шрифты
 $font-size-xs: 0.65rem;
 $font-size-sm: 0.75rem;
 $font-size-base: 0.875rem;
@@ -41,13 +50,26 @@ $font-size-md: 1rem;
 $font-size-lg: 1.125rem;
 $font-size-xl: 1.5rem;
 
-// Transitions
+// Транзишены
 $transition-fast: 0.2s;
 $transition-normal: 0.3s;
+$transition-slow: 0.4s;
 
-// Shadows
-$shadow-light: 0 0 10px rgba(0, 0, 0, 0.1);
+// Тени
+$shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$shadow-sm:
+    0 1px 3px 0 rgba(0, 0, 0, 0.1),
+    0 1px 2px -1px rgba(0, 0, 0, 0.1);
+$shadow-md:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -2px rgba(0, 0, 0, 0.1);
+$shadow-lg:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -4px rgba(0, 0, 0, 0.1);
+$shadow-xl:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 8px 10px -6px rgba(0, 0, 0, 0.1);
 
-// Max widths
-$message-max-width: 70%;
-$container-max-width: 1200px;
+// Ширины
+$message-max-width: 75%;
+$container-max-width: 1100px;

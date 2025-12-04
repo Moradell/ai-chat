@@ -3,45 +3,73 @@
 
 .inputContainer {
     display: flex;
-    gap: $spacing-sm;
-    padding: $spacing-lg;
+    gap: $spacing-md;
+    padding: $spacing-lg $spacing-xl;
     border-top: 1px solid $border-color;
     background-color: $background-white;
+    box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
 .textarea {
     flex: 1;
-    padding: $spacing-md;
-    border: 1px solid $border-color-input;
-    border-radius: $border-radius-md;
+    padding: $spacing-lg;
+    border: 2px solid $border-color;
+    border-radius: $border-radius-lg;
     font-family: inherit;
     font-size: $font-size-md;
     resize: none;
-    min-height: 44px;
+    min-height: 52px;
     max-height: 200px;
+    transition: all $transition-fast;
+    background-color: $background-gray;
+
+    &::placeholder {
+        color: $text-tertiary;
+    }
 
     &:focus {
         outline: none;
         border-color: $primary-color;
+        background-color: $background-white;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
     }
 
     &:disabled {
         background-color: $background-light;
         cursor: not-allowed;
+        opacity: 0.6;
     }
 }
 
 .sendButton {
     @include button-base;
     padding: $spacing-md $spacing-xl;
-    background-color: $primary-color;
+    background: linear-gradient(135deg, $primary-color 0%, $primary-light 100%);
     color: $text-white;
+    font-weight: 600;
+    box-shadow: $shadow-sm;
+    transition: all $transition-fast;
+    min-width: 100px;
 
     &:hover:not(:disabled) {
-        background-color: $primary-hover;
+        background: linear-gradient(
+            135deg,
+            $primary-hover 0%,
+            $primary-color 100%
+        );
+        transform: translateY(-2px);
+        box-shadow: $shadow-md;
+    }
+
+    &:active:not(:disabled) {
+        transform: translateY(0);
+        box-shadow: $shadow-sm;
     }
 
     &:disabled {
-        background-color: $border-color-input;
+        background: $background-light;
+        color: $text-tertiary;
+        box-shadow: none;
+        opacity: 0.5;
     }
 }

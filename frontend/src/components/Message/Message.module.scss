@@ -10,8 +10,21 @@
         justify-content: flex-end;
 
         .content {
-            background-color: $primary-color;
+            background: linear-gradient(
+                135deg,
+                $primary-color 0%,
+                $primary-light 100%
+            );
             color: $text-white;
+            box-shadow: $shadow-md;
+        }
+
+        .role {
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .timestamp {
+            color: rgba(255, 255, 255, 0.9);
         }
     }
 
@@ -19,36 +32,50 @@
         justify-content: flex-start;
 
         .content {
-            background-color: $background-message;
-            color: inherit;
+            background-color: $background-white;
+            color: $text-primary;
+            border: 1px solid $border-color-light;
+            box-shadow: $shadow-sm;
         }
     }
 }
 
 .content {
     max-width: $message-max-width;
-    padding: $spacing-md $spacing-lg;
+    padding: $spacing-lg;
     border-radius: $border-radius-lg;
+    transition:
+        transform $transition-fast,
+        box-shadow $transition-fast;
+
+    &:hover {
+        transform: translateY(-1px);
+        box-shadow: $shadow-md;
+    }
 }
 
 .role {
     font-size: $font-size-sm;
-    font-weight: 600;
-    margin-bottom: $spacing-xs;
-    opacity: 0.8;
+    font-weight: 700;
+    margin-bottom: $spacing-sm;
+    opacity: 0.85;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .text {
     white-space: pre-wrap;
     word-wrap: break-word;
-    line-height: 1.5;
+    line-height: 1.6;
+    font-size: $font-size-md;
 }
 
 .cursor {
     display: inline-block;
-    margin-left: 2px;
+    margin-left: 3px;
     animation: blink 1s infinite;
-    color: inherit;
+    color: $primary-color;
+    font-weight: bold;
 }
 
 @keyframes blink {
@@ -64,6 +91,7 @@
 
 .timestamp {
     font-size: $font-size-xs;
-    margin-top: $spacing-xs;
-    opacity: 0.6;
+    margin-top: $spacing-sm;
+    opacity: 0.5;
+    font-weight: 500;
 }
