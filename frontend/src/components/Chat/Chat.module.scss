@@ -1,0 +1,71 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.chatContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    max-width: $container-max-width;
+    margin: 0 auto;
+    background-color: $background-white;
+    box-shadow: $shadow-light;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $spacing-lg $spacing-xl;
+    border-bottom: 1px solid $border-color;
+    background-color: $background-light;
+}
+
+.title {
+    margin: 0;
+    font-size: $font-size-xl;
+    color: $text-primary;
+}
+
+.clearButton {
+    @include button-base;
+    padding: $spacing-sm $spacing-lg;
+    background-color: $danger-color;
+    color: $text-white;
+    font-size: $font-size-base;
+
+    &:hover {
+        background-color: $danger-hover;
+    }
+}
+
+.messagesContainer {
+    flex: 1;
+    overflow-y: auto;
+    padding: $spacing-lg;
+    background-color: $background-gray;
+    @include scrollbar;
+}
+
+.emptyState {
+    @include flex-center;
+    height: 100%;
+    color: $text-tertiary;
+    font-size: $font-size-lg;
+}
+
+.loadingIndicator {
+    display: flex;
+    justify-content: center;
+    padding: $spacing-lg;
+    color: $text-secondary;
+    font-style: italic;
+}
+
+.errorMessage {
+    padding: $spacing-md;
+    margin: $spacing-lg;
+    background-color: $error-background;
+    color: $error-text;
+    border: 1px solid $error-border;
+    border-radius: $border-radius-sm;
+}

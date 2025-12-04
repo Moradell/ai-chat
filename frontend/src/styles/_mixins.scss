@@ -1,0 +1,54 @@
+@use "sass:color";
+@use "./variables" as *;
+
+@mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin button-base {
+    border: none;
+    border-radius: $border-radius-md;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color $transition-fast;
+
+    &:disabled {
+        cursor: not-allowed;
+    }
+}
+
+@mixin fade-in-animation {
+    animation: fadeIn $transition-normal ease-in;
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+}
+
+@mixin scrollbar {
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: $background-gray;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $border-color;
+        border-radius: $border-radius-sm;
+
+        &:hover {
+            background: color.adjust($border-color, $lightness: -10%);
+        }
+    }
+}

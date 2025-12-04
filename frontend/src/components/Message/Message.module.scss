@@ -1,0 +1,51 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.message {
+    display: flex;
+    margin-bottom: $spacing-lg;
+    @include fade-in-animation;
+
+    &.user {
+        justify-content: flex-end;
+
+        .content {
+            background-color: $primary-color;
+            color: $text-white;
+        }
+    }
+
+    &.assistant {
+        justify-content: flex-start;
+
+        .content {
+            background-color: $background-message;
+            color: inherit;
+        }
+    }
+}
+
+.content {
+    max-width: $message-max-width;
+    padding: $spacing-md $spacing-lg;
+    border-radius: $border-radius-lg;
+}
+
+.role {
+    font-size: $font-size-sm;
+    font-weight: 600;
+    margin-bottom: $spacing-xs;
+    opacity: 0.8;
+}
+
+.text {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    line-height: 1.5;
+}
+
+.timestamp {
+    font-size: $font-size-xs;
+    margin-top: $spacing-xs;
+    opacity: 0.6;
+}

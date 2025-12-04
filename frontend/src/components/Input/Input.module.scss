@@ -1,0 +1,47 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.inputContainer {
+    display: flex;
+    gap: $spacing-sm;
+    padding: $spacing-lg;
+    border-top: 1px solid $border-color;
+    background-color: $background-white;
+}
+
+.textarea {
+    flex: 1;
+    padding: $spacing-md;
+    border: 1px solid $border-color-input;
+    border-radius: $border-radius-md;
+    font-family: inherit;
+    font-size: $font-size-md;
+    resize: none;
+    min-height: 44px;
+    max-height: 200px;
+
+    &:focus {
+        outline: none;
+        border-color: $primary-color;
+    }
+
+    &:disabled {
+        background-color: $background-light;
+        cursor: not-allowed;
+    }
+}
+
+.sendButton {
+    @include button-base;
+    padding: $spacing-md $spacing-xl;
+    background-color: $primary-color;
+    color: $text-white;
+
+    &:hover:not(:disabled) {
+        background-color: $primary-hover;
+    }
+
+    &:disabled {
+        background-color: $border-color-input;
+    }
+}
