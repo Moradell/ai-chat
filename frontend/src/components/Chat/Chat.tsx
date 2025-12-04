@@ -11,6 +11,7 @@ export const Chat = () => {
     isStreaming,
     error,
     sendMessage,
+    stopGeneration,
     clearMessages,
   } = useChat();
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -23,15 +24,22 @@ export const Chat = () => {
     <div className={styles.chatContainer}>
       <div className={styles.header}>
         <h1 className={styles.title}>AI Chat</h1>
-        {messages.length > 0 && (
-          <button
-            className={styles.clearButton}
-            onClick={clearMessages}
-            disabled={isStreaming}
-          >
-            Очистить
-          </button>
-        )}
+        <div className={styles.headerButtons}>
+          {isStreaming && (
+            <button className={styles.stopButton} onClick={stopGeneration}>
+              ⏹ Остановить
+            </button>
+          )}
+          {messages.length > 0 && (
+            <button
+              className={styles.clearButton}
+              onClick={clearMessages}
+              disabled={isStreaming}
+            >
+              Очистить
+            </button>
+          )}
+        </div>
       </div>
 
       <div className={styles.messagesContainer}>

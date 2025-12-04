@@ -49,6 +49,44 @@
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.headerButtons {
+    display: flex;
+    gap: $spacing-sm;
+    align-items: center;
+}
+
+.stopButton {
+    @include button-base;
+    padding: $spacing-sm $spacing-lg;
+    background-color: rgba(239, 68, 68, 0.9);
+    color: $text-white;
+    font-size: $font-size-base;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: all $transition-fast;
+    animation: pulse 2s infinite;
+
+    &:hover {
+        background-color: rgba(220, 38, 38, 0.95);
+        transform: translateY(-1px);
+        box-shadow: $shadow-sm;
+    }
+
+    &:active {
+        transform: scale(0.98);
+    }
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
+    }
+}
+
 .clearButton {
     @include button-base;
     padding: $spacing-sm $spacing-lg;

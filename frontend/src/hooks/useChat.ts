@@ -8,6 +8,7 @@ export const useChat = () => {
   const [isStreaming, setIsStreaming] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const streamingMessageIdRef = useRef<string | null>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const sendMessage = useCallback(async (content: string) => {
     if (!content.trim()) return;
@@ -36,6 +37,8 @@ export const useChat = () => {
 
     setMessages((prev) => [...prev, assistantMessage]);
 
+    abortControllerRef.current = new AbortController();
+
     try {
       await chatApi.sendMessageStream(
         { message: content },
@@ -44,13 +47,15 @@ export const useChat = () => {
             prev.map((msg) =>
               msg.id === assistantMessageId
                 ? { ...msg, content: msg.content + chunk }
-                : msg
-            )
+                : msg,
+            ),
           );
         },
         (err) => {
           const errorMessage =
-            err instanceof Error ? err.message : "Не удалось отправить сообщение";
+            err instanceof Error
+              ? err.message
+              : "Не удалось отправить сообщение";
           setError(errorMessage);
           console.error("Ошибка отправки сообщения:", err);
         },
@@ -58,13 +63,26 @@ export const useChat = () => {
           setIsStreaming(false);
           setIsLoading(false);
           streamingMessageIdRef.current = null;
-        }
+          abortControllerRef.current = null;
+        },
+        abortControllerRef.current.signal,
       );
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "Не удалось отправить сообщение";
       setError(errorMessage);
       console.error("Ошибка отправки сообщения:", err);
+      setIsStreaming(false);
+      setIsLoading(false);
+      streamingMessageIdRef.current = null;
+      abortControllerRef.current = null;
+    }
+  }, []);
+
+  const stopGeneration = useCallback(() => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
       setIsStreaming(false);
       setIsLoading(false);
       streamingMessageIdRef.current = null;
@@ -82,6 +100,7 @@ export const useChat = () => {
     isStreaming,
     error,
     sendMessage,
+    stopGeneration,
     clearMessages,
   };
 };

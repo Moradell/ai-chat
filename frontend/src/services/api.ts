@@ -20,7 +20,8 @@ export const chatApi = {
     request: ChatRequest,
     onChunk: (chunk: string) => void,
     onError?: (error: Error) => void,
-    onComplete?: () => void
+    onComplete?: () => void,
+    signal?: AbortSignal,
   ): Promise<void> => {
     try {
       const response = await fetch(`${API_BASE_URL}/chat/stream`, {
@@ -29,6 +30,7 @@ export const chatApi = {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(request),
+        signal,
       });
 
       if (!response.ok) {
@@ -74,6 +76,10 @@ export const chatApi = {
         }
       }
     } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") {
+        onComplete?.();
+        return;
+      }
       onError?.(error instanceof Error ? error : new Error("Unknown error"));
     }
   },
